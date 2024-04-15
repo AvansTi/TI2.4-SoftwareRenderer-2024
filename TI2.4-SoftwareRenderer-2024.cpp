@@ -1,20 +1,35 @@
-// TI2.4-SoftwareRenderer-2024.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include "stb_image_write.h"
+#include "Vec3.h"
+#include "Vec2.h"
+
+const int width = 512;
+const int height = 512;
+
+void setPixel(char* imgData, int x, int y, const Vec3 &color)
+{
+    if (x < 0 || y < 0 || x >= width || y >= height)
+        return;
+    imgData[3 * (x + width * y) + 0] = (unsigned char)(color.x * 255);
+    imgData[3 * (x + width * y) + 1] = (unsigned char)(color.y * 255);
+    imgData[3 * (x + width * y) + 2] = (unsigned char)(color.z * 255);
+}
+
+void drawTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Vec3& color)
+{
+    //code om een driehoek te tekenen
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    char* imgData = new char[512 * 512 * 3];
+    for (int x = 0; x < width; x++)
+        for (int y = 0; y < height; y++)
+            setPixel(imgData, x, y, Vec3(0.95f, 0.34f, 0));
+
+
+    drawTriangle(Vec2(10, 10), Vec2(400, 30), Vec2(200, 300), Vec3(1,1,1));
+
+
+    stbi_write_png("out.png", width, height, 3, imgData, 0);
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
